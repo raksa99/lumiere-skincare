@@ -6,8 +6,8 @@ Midterm (group) front end built with **SSG (Static Site Generation)**.
 
 | Page | File | Notes |
 |---|---|---|
-| Catalog / home | `docs/index.html` | 10 products, category filter, search, sort, promo banners |
-| Product detail | `docs/products/<slug>.html` | 10 pages, qty selector, ingredients, how to use, related products |
+| Catalog / home | `docs/index.html` | 24 products (4 per category), category filter, search, sort by featured/price/rating/popularity, promo banners |
+| Product detail | `docs/products/<slug>.html` | 24 pages, qty selector, ingredients, how to use, related products |
 | Cart list | `docs/cart.html` | change qty, remove, promo code, free-shipping progress |
 | Checkout | `docs/checkout.html` | shipping + card form with validation (Luhn, expiry, CVV) |
 | Invoice | `docs/invoice.html` | printable / save as PDF |

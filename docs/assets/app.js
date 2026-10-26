@@ -98,17 +98,30 @@
     function apply() {
       var q = $('#search').value.trim().toLowerCase(), sort = $('#sort').value, shown = 0;
       cards.sort(function (a, b) {
-        if (sort === 'price-asc') return a.dataset.price - b.dataset.price;
-        if (sort === 'price-desc') return b.dataset.price - a.dataset.price;
-        if (sort === 'rating') return b.dataset.rating - a.dataset.rating;
-        return a.dataset.order - b.dataset.order;
+        if (sort === 'price-asc') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+        if (sort === 'price-desc') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+        if (sort === 'rating') return (parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating)) || (parseInt(b.dataset.reviews || '0', 10) - parseInt(a.dataset.reviews || '0', 10));
+        if (sort === 'popular') return parseInt(b.dataset.reviews || '0', 10) - parseInt(a.dataset.reviews || '0', 10);
+        if (sort === 'name-asc') return a.dataset.name.localeCompare(b.dataset.name);
+        if (sort === 'featured') {
+          var featA = parseInt(a.dataset.featured || '0', 10);
+          var featB = parseInt(b.dataset.featured || '0', 10);
+          if (featB !== featA) return featB - featA;
+          return parseInt(a.dataset.order, 10) - parseInt(b.dataset.order, 10);
+        }
+        return parseInt(a.dataset.order, 10) - parseInt(b.dataset.order, 10);
       }).forEach(function (c) {
         var ok = (cat === 'All' || c.dataset.cat === cat) && (!q || c.dataset.name.indexOf(q) > -1 || c.dataset.cat.toLowerCase().indexOf(q) > -1);
-        c.hidden = !ok; if (ok) shown++;
+        c.hidden = !ok;
+        c.style.display = ok ? '' : 'none';
+        if (ok) shown++;
         grid.appendChild(c);
       });
       $('#result-count').textContent = shown;
+      var lbl = $('#result-label');
+      if (lbl) lbl.textContent = shown === 1 ? 'product' : 'products';
       $('#empty').hidden = shown !== 0;
+      $('#empty').style.display = shown !== 0 ? 'none' : '';
     }
     $('#search').addEventListener('input', apply);
     $('#sort').addEventListener('change', apply);

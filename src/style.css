@@ -5,6 +5,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+[hidden],.card[hidden]{display:none!important}
 body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--cream);line-height:1.55}
 a{color:inherit}
 img,svg{max-width:100%;display:block}
@@ -63,8 +64,13 @@ nav a:hover{color:var(--sage)}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:.2s}
 .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(47,74,59,.12)}
 .card-img{display:block;position:relative;padding:14px 14px 0}
-.tag{position:absolute;top:12px;left:12px;background:var(--green);color:#fff;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;z-index:2}
+.tag{position:absolute;top:12px;left:12px;background:var(--green);color:#fff;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;z-index:2;letter-spacing:.02em}
 .tag-sale{background:var(--sale)}
+.tag-bestseller{background:#c77d28}
+.tag-toprated{background:#6c528a}
+.tag-award{background:#9e782f}
+.tag-new{background:#2a754d}
+.tag-musthave{background:#26687d}
 .card-body{padding:12px 16px 18px;display:flex;flex-direction:column;flex:1}
 .cat{margin:0;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--sage);font-weight:700}
 .card h3{font-size:1.05rem;margin:4px 0 6px}

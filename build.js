@@ -122,11 +122,24 @@ ${body}
 }
 
 /* ---------- cards ---------- */
+function tagClass(badge) {
+  if (!badge) return '';
+  const b = badge.toLowerCase();
+  if (b.includes('sale')) return 'tag-sale';
+  if (b.includes('best')) return 'tag-bestseller';
+  if (b.includes('top')) return 'tag-toprated';
+  if (b.includes('award')) return 'tag-award';
+  if (b.includes('new')) return 'tag-new';
+  if (b.includes('must')) return 'tag-musthave';
+  return '';
+}
+
 function card(p, base) {
   const off = pctOff(p);
-  return `<article class="card" data-name="${esc(p.name.toLowerCase())}" data-cat="${esc(p.category)}" data-price="${p.price}" data-rating="${p.rating}" data-order="${p.id}">
+  const featScore = (p.featured ? 10 : 0) + (p.badge ? 5 : 0) + (p.rating >= 4.8 ? 3 : p.rating >= 4.7 ? 1 : 0);
+  return `<article class="card" data-name="${esc(p.name.toLowerCase())}" data-cat="${esc(p.category)}" data-price="${p.price}" data-rating="${p.rating}" data-reviews="${p.reviews || 0}" data-featured="${featScore}" data-order="${p.id}">
   <a class="card-img" href="${base}products/${p.slug}.html">
-    ${off ? `<span class="tag tag-sale">-${off}%</span>` : p.badge ? `<span class="tag">${esc(p.badge)}</span>` : ''}
+    ${off ? `<span class="tag tag-sale">-${off}%</span>` : p.badge ? `<span class="tag ${tagClass(p.badge)}">${esc(p.badge)}</span>` : ''}
     ${bottle(p, base)}
   </a>
   <div class="card-body">
@@ -151,7 +164,7 @@ function homePage() {
     <div>
       <p class="eyebrow">New season · Clean formulas</p>
       <h1>Skincare that loves your skin back.</h1>
-      <p class="lead">Ten dermatologist-tested essentials for cleansing, treating, hydrating and protecting. Save up to 25% on selected best-sellers.</p>
+      <p class="lead">Dermatologist-tested clean essentials for cleansing, treating, hydrating, and sun protection. Save up to 25% on selected best-sellers.</p>
       <p><a class="btn btn-lg" href="#shop">Shop now</a></p>
       <ul class="perks">
         <li>✔ Free shipping over $50</li>
@@ -172,7 +185,7 @@ function homePage() {
 <section class="wrap" id="shop">
   <div class="section-head">
     <h2>Shop all products</h2>
-    <p class="muted"><span id="result-count">${products.length}</span> products</p>
+    <p class="muted"><span id="result-count">${products.length}</span> <span id="result-label">products</span></p>
   </div>
   <div class="toolbar">
     <div class="chips" id="chips">
@@ -184,7 +197,9 @@ function homePage() {
         <option value="featured">Featured</option>
         <option value="price-asc">Price: low to high</option>
         <option value="price-desc">Price: high to low</option>
-        <option value="rating">Top rated</option>
+        <option value="rating">Highest rated</option>
+        <option value="popular">Most popular</option>
+        <option value="name-asc">Name: A to Z</option>
       </select>
     </div>
   </div>
