@@ -144,6 +144,7 @@ ${body}
     <p class="muted">Student demo project. No real payments are processed and no data leaves your browser.</p>
   </div>
 </footer>
+<button id="scroll-top-btn" class="scroll-top-btn" aria-label="Scroll to top" title="Scroll to top">↑</button>
 <script src="${base}assets/products.js"></script>
 <script src="${base}assets/app.js"></script>
 </body>
@@ -166,7 +167,7 @@ function tagClass(badge) {
 function card(p, base) {
   const off = pctOff(p);
   const featScore = (p.featured ? 10 : 0) + (p.badge ? 5 : 0) + (p.rating >= 4.8 ? 3 : p.rating >= 4.7 ? 1 : 0);
-  return `<article class="card" data-name="${esc(p.name.toLowerCase())}" data-cat="${esc(p.category)}" data-price="${p.price}" data-rating="${p.rating}" data-reviews="${p.reviews || 0}" data-featured="${featScore}" data-order="${p.id}">
+  return `<article class="card reveal" data-name="${esc(p.name.toLowerCase())}" data-cat="${esc(p.category)}" data-price="${p.price}" data-rating="${p.rating}" data-reviews="${p.reviews || 0}" data-featured="${featScore}" data-order="${p.id}">
   <a class="card-img" href="${base}products/${p.slug}.html">
     ${off ? `<span class="tag tag-sale">-${off}%</span>` : p.badge ? `<span class="tag ${tagClass(p.badge)}">${esc(p.badge)}</span>` : ''}
     ${bottle(p, base)}
@@ -190,7 +191,7 @@ function homePage() {
   const body = `
 <section class="hero">
   <div class="wrap hero-in">
-    <div>
+    <div class="hero-text">
       <p class="eyebrow">New season · Clean formulas</p>
       <h1>Skincare that loves your skin back.</h1>
       <p class="lead">Dermatologist-tested clean essentials for cleansing, treating, hydrating, and sun protection. Save up to 25% on selected best-sellers.</p>
@@ -201,22 +202,22 @@ function homePage() {
         <li>✔ 30-day returns</li>
       </ul>
     </div>
-    <div class="hero-art">${bottle(products[3])}<div class="hero-art-2">${bottle(products[6])}</div></div>
+    <div class="hero-art hero-art-wrap">${bottle(products[3])}<div class="hero-art-2">${bottle(products[6])}</div></div>
   </div>
 </section>
 
 <section class="wrap promo-row">
-  <div class="promo"><strong>GLOW10</strong><span>10% off your order</span></div>
-  <div class="promo"><strong>WELCOME15</strong><span>15% off new customers</span></div>
-  <div class="promo"><strong>FREESHIP</strong><span>Free shipping on any order</span></div>
+  <div class="promo reveal"><strong>GLOW10</strong><span>10% off your order</span></div>
+  <div class="promo reveal"><strong>WELCOME15</strong><span>15% off new customers</span></div>
+  <div class="promo reveal"><strong>FREESHIP</strong><span>Free shipping on any order</span></div>
 </section>
 
 <section class="wrap" id="shop">
-  <div class="section-head">
+  <div class="section-head reveal">
     <h2>Shop all products</h2>
     <p class="muted"><span id="result-count">${products.length}</span> <span id="result-label">products</span></p>
   </div>
-  <div class="toolbar">
+  <div class="toolbar reveal">
     <div class="chips" id="chips">
       ${cats.map((c, i) => `<button class="chip${i === 0 ? ' active' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}
     </div>
@@ -247,7 +248,7 @@ function productPage(p) {
   const body = `
 <div class="wrap">
   <p class="crumbs"><a href="${base}index.html">Home</a> / <a href="${base}index.html#shop">${esc(p.category)}</a> / ${esc(p.name)}</p>
-  <section class="detail">
+  <section class="detail reveal">
     <div class="detail-img">${bottle(p, base)}</div>
     <div class="detail-info">
       <p class="cat">${esc(p.category)}</p>
@@ -271,7 +272,7 @@ function productPage(p) {
       <details><summary>How to use</summary><p>${esc(p.howToUse)}</p></details>
     </div>
   </section>
-  <section class="related">
+  <section class="related reveal">
     <h2>You may also like</h2>
     <div class="grid grid-3">${related.map((r) => card(r, base)).join('\n')}</div>
   </section>
@@ -282,8 +283,8 @@ function productPage(p) {
 function cartPage() {
   const body = `
 <div class="wrap">
-  <h1 class="page-title">Your cart</h1>
-  <div id="cart-root"><noscript>Please enable JavaScript to view your cart.</noscript></div>
+  <h1 class="page-title reveal">Your cart</h1>
+  <div id="cart-root" class="reveal"><noscript>Please enable JavaScript to view your cart.</noscript></div>
 </div>`;
   return layout({ title: 'Your cart — Lumière Skincare', desc: 'Review the items in your cart.', base: '', body, page: 'cart' });
 }
@@ -291,8 +292,8 @@ function cartPage() {
 function checkoutPage() {
   const body = `
 <div class="wrap">
-  <h1 class="page-title">Checkout</h1>
-  <div class="checkout">
+  <h1 class="page-title reveal">Checkout</h1>
+  <div class="checkout reveal">
     <form id="checkout-form" novalidate>
       <fieldset>
         <legend>1. Contact &amp; shipping</legend>
@@ -332,7 +333,7 @@ function checkoutPage() {
 function invoicePage() {
   const body = `
 <div class="wrap">
-  <div id="invoice-root"><noscript>Please enable JavaScript to view your invoice.</noscript></div>
+  <div id="invoice-root" class="reveal"><noscript>Please enable JavaScript to view your invoice.</noscript></div>
 </div>`;
   return layout({ title: 'Invoice — Lumière Skincare', desc: 'Your order invoice.', base: '', body, page: 'invoice' });
 }

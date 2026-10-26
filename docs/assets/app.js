@@ -114,7 +114,10 @@
         var ok = (cat === 'All' || c.dataset.cat === cat) && (!q || c.dataset.name.indexOf(q) > -1 || c.dataset.cat.toLowerCase().indexOf(q) > -1);
         c.hidden = !ok;
         c.style.display = ok ? '' : 'none';
-        if (ok) shown++;
+        if (ok) {
+          shown++;
+          c.classList.add('revealed');
+        }
         grid.appendChild(c);
       });
       $('#result-count').textContent = shown;
@@ -317,6 +320,54 @@
     }
   }
 
+  /* ---------- scroll animations & header effects ---------- */
+  function initScrollAnimations() {
+    var header = $('.site-header');
+    var scrollBtn = $('#scroll-top-btn');
+
+    // Sticky header frosted blur on scroll & scroll-to-top button
+    function onScroll() {
+      var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      if (header) {
+        if (y > 35) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+      }
+      if (scrollBtn) {
+        if (y > 320) scrollBtn.classList.add('visible');
+        else scrollBtn.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (scrollBtn) {
+      scrollBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Scroll reveal observer
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -20px 0px'
+      });
+
+      $$('.reveal').forEach(function (el) {
+        observer.observe(el);
+      });
+    } else {
+      $$('.reveal').forEach(function (el) { el.classList.add('revealed'); });
+    }
+  }
+
   /* ---------- init ---------- */
   initLoader();
   updateBadge();
@@ -324,4 +375,5 @@
   initCart();
   initCheckout();
   initInvoice();
+  initScrollAnimations();
 })();
