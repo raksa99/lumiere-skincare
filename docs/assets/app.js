@@ -292,7 +292,33 @@
       '<div class="inv-actions"><button class="btn" onclick="window.print()">Print / Save as PDF</button><a class="btn btn-ghost" href="' + base + 'index.html">Continue shopping</a></div></section>';
   }
 
+  /* ---------- full page loading animation ---------- */
+  function initLoader() {
+    var loader = $('#page-loader');
+    if (!loader) return;
+    function hideLoader() {
+      if (loader.classList.contains('loaded')) return;
+      var bar = $('#loader-bar');
+      if (bar) bar.style.width = '100%';
+      setTimeout(function () {
+        loader.classList.add('loaded');
+        setTimeout(function () {
+          try { loader.remove(); } catch (e) {}
+        }, 700);
+      }, 350);
+    }
+    if (document.readyState === 'complete') {
+      setTimeout(hideLoader, 300);
+    } else {
+      window.addEventListener('load', function () {
+        setTimeout(hideLoader, 300);
+      });
+      setTimeout(hideLoader, 1800);
+    }
+  }
+
   /* ---------- init ---------- */
+  initLoader();
   updateBadge();
   initCatalog();
   initCart();
